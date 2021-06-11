@@ -4,7 +4,6 @@ import br.edu.infnet.domain.Tabela;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletOutputStream;
@@ -15,12 +14,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.util.Rotation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,10 +34,20 @@ public class GraficoController {
         Date dataFim =  formato.parse(request.getParameter("dataFim"));
         try {
             tabela.carregarDadosBasicos(dataIni, dataFim);
-           
+            tabela.carregarMediasMoveis();
+            
             for (int i = 0; i < tabela.getListaDatas().size(); i++) {
            ds.addValue(tabela.getListaPrecoVenda().get(i),
-                   "Preço fechamento2",
+                   "Preço fechamento",
+                   formatoBrasileiro.format(formato.parse(tabela.getListaDatas().get(i)))); 
+           ds.addValue(tabela.getListaEMA9().get(i),
+                   "EMA 9",
+                   formatoBrasileiro.format(formato.parse(tabela.getListaDatas().get(i)))); 
+           ds.addValue(tabela.getListaEMA12().get(i),
+                   "EMA 12",
+                   formatoBrasileiro.format(formato.parse(tabela.getListaDatas().get(i)))); 
+           ds.addValue(tabela.getListaEMA26().get(i),
+                   "EMA 26",
                    formatoBrasileiro.format(formato.parse(tabela.getListaDatas().get(i)))); 
         }
         } catch (FileNotFoundException ex) {
@@ -51,7 +56,7 @@ public class GraficoController {
         
          //----------------------------------------------------------------------
         JFreeChart chart = ChartFactory.createLineChart(
-                "Aqui Vai o Titulo",
+                "Grafico de preço da Ação MGLU3",
                 "Data", "Preço da açao",
                 ds,
                 PlotOrientation.VERTICAL,
@@ -70,7 +75,7 @@ public class GraficoController {
 
             ServletOutputStream out = response.getOutputStream();
             response.setContentType("image/png");
-            ChartUtilities.writeChartAsPNG(out, chart, 1000, 600);
+            ChartUtilities.writeChartAsPNG(out, chart, 2000, 600);
             out.flush();
             out.close();
 

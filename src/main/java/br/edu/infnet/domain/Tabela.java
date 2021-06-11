@@ -28,9 +28,9 @@ public class Tabela {
         sc.next();
         while (sc.hasNext()) {
             dado = Arrays.asList(sc.next().split(","));
-            if ((dado.get(4).equals("null")) ||
-                    (formato.parse(dado.get(0)).before(dataIni)) ||
-                    (formato.parse(dado.get(0)).after(dataFim))) {
+            if ((dado.get(4).equals("null"))
+                    || (formato.parse(dado.get(0)).before(dataIni))
+                    || (formato.parse(dado.get(0)).after(dataFim))) {
                 sc.next();
             } else {
                 //0 - Date,1 - Open,2 - High,3 - Low,4 - Close,5 - Adj_Close,6 - Volume
@@ -39,6 +39,54 @@ public class Tabela {
             }
         }
         sc.close();
+    }
+
+    public void carregarMediasMoveis() {
+
+        double ema9 = -1.0;
+        double ema12 = -1.0;
+        double ema26 = -1.0;
+        Fila fila9 = new Fila(9);
+        Fila fila12 = new Fila(12);
+        Fila fila26 = new Fila(26);
+
+        for (int i = 0; i < this.listaPrecoVenda.size(); i++) {
+            fila9.adicionar(this.listaPrecoVenda.get(i));
+            fila12.adicionar(this.listaPrecoVenda.get(i));
+            fila26.adicionar(this.listaPrecoVenda.get(i));
+            System.out.println("ema >>>"+ ema9);
+            if (fila9.taCheia()) {
+                if (ema9 == -1.0) {
+                    ema9 = fila9.SMA();
+                } else {
+                    ema9 = (this.listaPrecoVenda.get(i) - ema9) * fila9.multiplicador() + ema9;
+                }
+                this.listaEMA9.add(ema9);
+            }else{
+                this.listaEMA9.add(null);
+            }
+            if (fila12.taCheia()) {
+                if (ema12 == -1.0) {
+                    ema12 = fila12.SMA();
+                } else {
+                    ema12 = (this.listaPrecoVenda.get(i) - ema12) * fila12.multiplicador() + ema12;
+                }
+                this.listaEMA12.add(ema12);
+            }else{
+                this.listaEMA12.add(null);
+            }
+
+            if (fila26.taCheia()) {
+                if (ema26 == -1.0) {
+                    ema26 = fila26.SMA();
+                } else {
+                    ema26 = (this.listaPrecoVenda.get(i) - ema26) * fila26.multiplicador() + ema26;
+                }
+                this.listaEMA26.add(ema26);
+            }else{
+                this.listaEMA26.add(null);
+            }
+        }
     }
 
     public List<String> getListaDatas() {
