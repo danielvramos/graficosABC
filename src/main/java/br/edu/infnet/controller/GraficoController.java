@@ -13,6 +13,8 @@ import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -62,14 +64,11 @@ public class GraficoController {
                 PlotOrientation.VERTICAL,
                 true, true, false);
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(ChartColor.lightGray);
+        plot.setBackgroundPaint(ChartColor.white);
         plot.setRangeGridlinePaint(ChartColor.white);
-       
-        //ChartPanel chartPanel = new ChartPanel( chart );
-      //chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
-      //setContentPane( chartPanel );
-       // BarRenderer renderer = (LineChart) plot.getRenderer();
-       // renderer.setMaximumBarWidth(0.06);
+        CategoryAxis caxis = plot.getDomainAxis();
+        caxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+        
         //----------------------------------------------------------------------
         try {
 

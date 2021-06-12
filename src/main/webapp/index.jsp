@@ -45,7 +45,7 @@
             <div class="col-sm-3">
 
                 <div class='input-group date' id='datetimepicker1' >
-                    <input type='text' class="form-control" name="dataIni" id="dataIni" value="2019-04-14"/>
+                    <input type='text' class="form-control" name="dataIni" id="dataIni" value="2019-10-14"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
